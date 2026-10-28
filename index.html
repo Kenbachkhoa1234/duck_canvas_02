@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; object-src 'none'; base-uri 'none'">
+  <title>DuckMess Canvas 02</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app-shell" aria-label="DuckMess Canvas 02 demo">
+    <header class="conversation-deck" aria-label="Các cuộc trò chuyện gần đây">
+      <a class="brand" href="#" aria-label="DuckMess Canvas">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span><strong>DuckMess</strong><small>CANVAS 02</small></span>
+      </a>
+      <button class="deck-arrow" id="deckPrev" type="button" aria-label="Cuộn sang trái">‹</button>
+      <div class="deck-viewport" id="deckViewport">
+        <div class="deck-track" id="conversationStrip"></div>
+      </div>
+      <button class="deck-arrow" id="deckNext" type="button" aria-label="Cuộn sang phải">›</button>
+    </header>
+
+    <section class="chat-panel">
+      <header class="chat-header">
+        <div class="avatar avatar--lg avatar--online" id="activeAvatar"><span>M</span></div>
+        <div class="chat-person">
+          <h1 id="activeName">Minh</h1>
+          <p><span class="online-dot"></span><span id="activeStatus">Đang hoạt động</span></p>
+        </div>
+        <div class="header-actions" aria-label="Thao tác cuộc trò chuyện">
+          <button type="button" data-toast="Gọi thoại demo" aria-label="Gọi thoại">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.8 3 4 5.8c0 7 5.2 12.2 12.2 12.2L19 15.2l-4-2-1.5 1.5a11 11 0 0 1-4.2-4.2L10.8 9z"/></svg>
+          </button>
+          <button type="button" data-toast="Gọi video demo" aria-label="Gọi video">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="m16 10 5-3v10l-5-3z"/></svg>
+          </button>
+          <button type="button" id="detailsButton" aria-label="Chi tiết cuộc trò chuyện">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <section class="canvas-stage" id="canvasStage" aria-label="Nội dung trò chuyện dạng canvas">
+        <div class="canvas-grid" aria-hidden="true"></div>
+        <svg class="thread-layer" id="threadLayer" aria-hidden="true">
+          <defs>
+            <filter id="threadGlow" x="-30%" y="-30%" width="160%" height="160%">
+              <feGaussianBlur stdDeviation="2" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <g id="savedThreads"></g>
+          <path id="dragThread" class="thread-path thread-path--drag" d="" hidden></path>
+        </svg>
+
+        <article class="node node--file" id="fileNode">
+          <div class="node-avatar avatar avatar--sm avatar--online"><span>M</span></div>
+          <time>14:21</time>
+          <p>Mình gửi lại file concept nhé.</p>
+          <button class="file-card" type="button" data-toast="Tải file concept_v3.fig">
+            <span class="file-logo">F</span>
+            <span><strong>concept_v3.fig</strong><small>Figma File · 24,8 MB</small></span>
+            <span class="download-icon">↓</span>
+          </button>
+          <button class="thread-anchor thread-anchor--file" type="button" data-anchor="file" aria-label="Kéo để nối file"></button>
+        </article>
+
+        <article class="node node--reply node--reply-top thread-target" data-target="reply-top">
+          <div class="bubble bubble--out">Phần này ổn rồi, giữ màu tím nha.</div>
+          <time>14:23 <b>✓✓</b></time>
+          <div class="node-avatar avatar avatar--sm"><span>B</span></div>
+        </article>
+
+        <article class="node node--text">
+          <div class="node-avatar avatar avatar--sm avatar--online"><span>M</span></div>
+          <time>14:24</time>
+          <div class="bubble">Ok, mình sửa theo nhé.</div>
+        </article>
+
+        <article class="node node--voice">
+          <button class="voice-card" id="voiceButton" type="button" aria-label="Phát tin nhắn thoại">
+            <span class="voice-play">▶</span>
+            <span class="waveform" aria-hidden="true"></span>
+            <span>0:28</span>
+          </button>
+          <time>14:25</time>
+        </article>
+
+        <article class="node node--reply-preview thread-target" data-target="reply-preview">
+          <span class="reply-bar"></span>
+          <span><strong>Đang trả lời Minh</strong><small>Mình gửi lại file concept nhé.</small></span>
+          <button type="button" aria-label="Đóng reply" data-toast="Đã đóng reply">×</button>
+        </article>
+
+        <article class="node node--gallery" id="galleryNode">
+          <div class="node-avatar avatar avatar--sm avatar--online"><span>M</span></div>
+          <p>Gửi bạn 4 ảnh tham khảo nè.</p>
+          <div class="gallery" aria-label="Bốn ảnh đã gửi">
+            <button class="gallery-photo photo-house" type="button" data-photo="Nhà trắng lúc hoàng hôn" aria-label="Xem ảnh nhà trắng">
+              <span class="photo-scene" aria-hidden="true"></span>
+              <span class="thread-anchor" data-anchor="house" aria-label="Kéo để nối ảnh nhà"></span>
+            </button>
+            <button class="gallery-photo photo-interior" type="button" data-photo="Nội thất tím tối giản" aria-label="Xem ảnh nội thất">
+              <span class="photo-scene" aria-hidden="true"></span>
+              <span class="thread-anchor" data-anchor="interior" aria-label="Kéo để nối ảnh nội thất"></span>
+            </button>
+            <button class="gallery-photo photo-city" type="button" data-photo="Thành phố về đêm" aria-label="Xem ảnh thành phố">
+              <span class="photo-scene" aria-hidden="true"></span>
+              <span class="thread-anchor" data-anchor="city" aria-label="Kéo để nối ảnh thành phố"></span>
+            </button>
+            <button class="gallery-photo photo-lake" type="button" data-photo="Hồ trên núi" aria-label="Xem ảnh hồ trên núi">
+              <span class="photo-scene" aria-hidden="true"></span>
+              <span class="thread-anchor" data-anchor="lake" aria-label="Kéo để nối ảnh hồ"></span>
+            </button>
+          </div>
+          <small class="gallery-meta">4 ảnh · 14:26</small>
+        </article>
+
+        <article class="node node--reply node--reply-photo thread-target" data-target="reply-photo">
+          <div class="bubble bubble--out">Tấm thứ hai hợp hơn á.</div>
+          <time>14:27 <b>✓✓</b></time>
+          <div class="node-avatar avatar avatar--sm"><span>B</span></div>
+        </article>
+
+        <article class="node node--reply node--reply-lake thread-target" data-target="reply-lake">
+          <div class="bubble bubble--out">Cảnh này làm hình nền đẹp nè.</div>
+          <time>14:28 <b>✓✓</b></time>
+          <div class="node-avatar avatar avatar--sm"><span>B</span></div>
+        </article>
+
+        <div class="drag-tip" id="dragTip" role="status">Kéo đến một tin nhắn để nối</div>
+      </section>
+    </section>
+
+    <footer class="composer-shell">
+      <div class="quick-menu" id="quickMenu" hidden>
+        <button type="button" data-action="Ảnh"><span>▧</span>Ảnh</button>
+        <button type="button" data-action="Tệp"><span>□</span>Tệp</button>
+        <button type="button" data-action="Nhạc"><span>♪</span>Nhạc</button>
+        <button type="button" data-action="Hẹn giờ"><span>◷</span>Hẹn giờ</button>
+        <button type="button" data-action="Bình chọn"><span>▥</span>Bình chọn</button>
+      </div>
+      <button class="plus-button" id="plusButton" type="button" aria-label="Mở công cụ" aria-expanded="false">+</button>
+      <form class="composer" id="composerForm">
+        <label class="sr-only" for="messageInput">Nội dung tin nhắn</label>
+        <input id="messageInput" type="text" maxlength="4000" placeholder="Nhắn gì đó…" autocomplete="off">
+        <button class="composer-icon" type="button" aria-label="Biểu tượng cảm xúc">☺</button>
+        <button class="composer-icon" type="button" data-toast="Ghi âm demo" aria-label="Gửi giọng nói">♩</button>
+        <button class="send-button" type="submit" aria-label="Gửi tin nhắn">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 4 16 8-16 8 3-8zM7 12h13"/></svg>
+        </button>
+      </form>
+    </footer>
+  </main>
+
+  <dialog class="photo-dialog" id="photoDialog">
+    <form method="dialog">
+      <div class="photo-dialog-art" id="photoDialogArt"></div>
+      <h2 id="photoDialogTitle">Ảnh tham khảo</h2>
+      <p>Ảnh demo local — không tải dữ liệu từ dịch vụ bên thứ ba.</p>
+      <button value="close">Đóng</button>
+    </form>
+  </dialog>
+
+  <dialog class="details-dialog" id="detailsDialog">
+    <form method="dialog">
+      <div class="verified-mark">✓</div>
+      <h2>Chi tiết cuộc trò chuyện</h2>
+      <p><strong>Mã hóa đầu-cuối</strong><br>Khóa demo đã được xác minh trên 2 thiết bị.</p>
+      <button value="close">Đóng</button>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>

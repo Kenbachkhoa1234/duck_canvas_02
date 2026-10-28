@@ -1,0 +1,29 @@
+{
+  "id": "duckmess-canvas-02",
+  "name": "DuckMess Canvas 02",
+  "version": "0.2.0",
+  "type": "interactive-layout-demo",
+  "entry": "index.html",
+  "layout": "thread-canvas",
+  "features": [
+    "top-conversation-deck",
+    "attachment-gallery",
+    "draggable-reply-threads",
+    "quick-action-composer"
+  ],
+  "security": {
+    "scripts": ["app.js"],
+    "externalResources": false,
+    "networkAccess": false
+  },
+  "files": [
+    "index.html",
+    "styles.css",
+    "app.js",
+    "README.md",
+    "INTEGRATION.md",
+    "reference.png",
+    "preview.png",
+    "test/smoke.mjs"
+  ]
+}
